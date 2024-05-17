@@ -15,6 +15,13 @@
       "when": 1715611927236,
       "tag": "0001_thin_mad_thinker",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1715964084179,
+      "tag": "0002_lucky_kabuki",
+      "breakpoints": true
     }
   ]
 }
