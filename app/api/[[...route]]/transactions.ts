@@ -1,4 +1,6 @@
+import { z } from "zod";
 import { Hono } from "hono";
+import { and, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
 
 import { createId } from "@paralleldrive/cuid2";
 
@@ -12,10 +14,10 @@ import {
   accounts,
 } from "@/db/schema";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
-import { and, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
+
 
 import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
+
 
 const app = new Hono()
   .get(
