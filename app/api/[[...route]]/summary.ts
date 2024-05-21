@@ -9,7 +9,8 @@ import { db } from "@/db/drizzle";
 import { accounts, categories, transactions } from "@/db/schema";
 import { calculatePercentageChange, fillMissingDays } from "@/lib/utils";
 
-const app = new Hono().get(
+const app = new Hono()
+  .get(
   "/",
   clerkMiddleware(),
   zValidator(
@@ -77,8 +78,8 @@ const app = new Hono().get(
 
     const [lastPeriod] = await fetchFinancialData(
       auth.userId,
-      startDate,
-      endDate
+      lastPeriodStart,
+      lastPeriodEnd
     );
 
     const incomeChange = calculatePercentageChange(
@@ -137,7 +138,7 @@ const app = new Hono().get(
             Number
           ),
         expenses:
-          sql`SUM(CASE WHEN ${transactions.amount} < 0 THEN ${transactions.amount} ELSE 0 END)`.mapWith(
+          sql`SUM(CASE WHEN ${transactions.amount} < 0 THEN ABS(${transactions.amount}) ELSE 0 END)`.mapWith(
             Number
           ),
       })
@@ -163,7 +164,7 @@ const app = new Hono().get(
         remainingChange,
         incomeAmount: currentPeriod.income,
         incomeChange,
-        expensesAmount: currentPeriod,
+        expensesAmount: currentPeriod.expenses,
         expensesChange,
         categories: finalCategories,
         days,
